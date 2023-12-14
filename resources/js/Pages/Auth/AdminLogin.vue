@@ -23,7 +23,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route('login'), {
+    form.post(route('admin-login'), {
         onFinish: () => form.reset('password'),
     });
 };
@@ -31,11 +31,13 @@ const submit = () => {
 
 <template>
     <GuestLayout>
-        <Head title="User Log in" />
+        <Head title="Admin Log in" />
 
         <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
             {{ status }}
         </div>
+
+        <p class="text-white text-xl text-center font-bold my-4 p-2 border rounded">Login Administrador</p>
 
         <form @submit.prevent="submit">
             <div>
@@ -98,11 +100,5 @@ const submit = () => {
                 </PrimaryButton>
             </div>
         </form>
-
-        <a class="flex justify-center items-center gap-2 mt-2 border border-brand-main font-medium bg-white w-full h-10 rounded md:hover:bg-blue-600 md:hover:text-white md:hover:border-none transition-all duration-100"
-      :href="route('google-login')">
-          <i class="text-2xl fa-brands fa-google"></i>
-          Login with Google
-        </a>
     </GuestLayout>
 </template>

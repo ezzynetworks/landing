@@ -15,6 +15,11 @@
         @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])
         @inertiaHead
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+        <!-- Main Quill library -->
+        <script src="//cdn.quilljs.com/1.3.7/quill.min.js"></script>
+
+        <!-- Theme included stylesheets -->
+        <link href="//cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
     </head>
     <body class="font-sans antialiased">
         @inertia

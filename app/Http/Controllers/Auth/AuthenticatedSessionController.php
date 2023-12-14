@@ -25,6 +25,14 @@ class AuthenticatedSessionController extends Controller
         ]);
     }
 
+    public function adminCreate(): Response
+    {
+        return Inertia::render('Auth/AdminLogin', [
+            'canResetPassword' => Route::has('password.request'),
+            'status' => session('status'),
+        ]);
+    }
+
     /**
      * Handle an incoming authentication request.
      */
@@ -34,8 +42,32 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        if (Auth::user()->user_type == 'client') {
+          return redirect()->intended(route('home'));
+        } else {
+          Auth::guard('web')->logout();
+          $request->session()->invalidate();
+          $request->session()->regenerateToken();
+          return redirect('/')->withErrors("Este login es para clientes.");
+        }
     }
+
+    public function storeAdmin(LoginRequest $request): RedirectResponse
+    {
+        $request->authenticate();
+
+        $request->session()->regenerate();
+
+        if (Auth::user()->user_type == 'client') {
+          Auth::guard('web')->logout();
+          $request->session()->invalidate();
+          $request->session()->regenerateToken();
+          return redirect('/')->withErrors("Este login es para administradores.");
+        } else {
+          return redirect()->intended(RouteServiceProvider::HOME);
+        }
+    }
+
 
     /**
      * Destroy an authenticated session.

@@ -1,16 +1,29 @@
 <script setup>
+import { Head, usePage } from '@inertiajs/vue3'
+import { ref, onMounted } from 'vue'
+
 import AppLayout from '@/Layouts/AppLayout.vue'
 import Ads from '@/Components/Ads.vue'
-import { Head, usePage } from '@inertiajs/vue3'
-import { ref, onMounted, onBeforeMount } from 'vue'
 
 const logged = ref(false)
+const editor = ref(null)
+const section = ref(null)
 
-onBeforeMount(() => {
-  if (localStorage.getItem('logged') != null) logged.value = true
+const props = defineProps({
+  contents: {
+    type: String,
+    default: null
+  }
 })
 
 onMounted(() => {
+  let onlyRead = {
+    readOnly: true
+  }
+
+  section.value = new Quill('.section', onlyRead)
+  if (props.contents != null) section.value.root.innerHTML = props.contents
+
   if (usePage().props.auth.user != null && logged.value == false) {
     localStorage.setItem('logged', true)
     window.open('https://www.google.com')
@@ -20,8 +33,6 @@ onMounted(() => {
     localStorage.removeItem('logged')
   }
 })
-
-
 </script>
 
 <template>
@@ -29,9 +40,7 @@ onMounted(() => {
 
   <AppLayout>
     <section class="bg-neutral-500 p-4 rounded">
-      <article class="text-white">
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Facilis veritatis nesciunt quibusdam saepe dolores iure deleniti corporis delectus rerum vitae quis hic quos at aut, dolor, sunt aliquid labore ratione.
-      </article>
+      <article class="section bg-white text-neutral-600 p-2 rounded"></article>
     </section>
 
     <section class="bg-neutral-500 p-4 rounded">

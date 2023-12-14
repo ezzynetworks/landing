@@ -6,12 +6,22 @@ if (usePage().props.flash.success != null) {
     usePage().props.flash.success = null
   }, 3000)
 }
+
+if (usePage().props.errors != null) {
+  setTimeout(() => {
+    usePage().props.errors = null
+  }, 3000)
+}
 </script>
 
 <template>
   <div class="relative w-screen h-screen">
     <p v-if="usePage().props.flash.success != null" class="text-white fixed top-2 right-2 px-4 py-2 bg-blue-500 z-10 rounded">
       {{ usePage().props.flash.success }}
+    </p>
+
+    <p v-if="usePage().props.errors != null" v-for="error of usePage().props.errors" class="text-white fixed top-2 right-2 px-4 py-2 bg-orange-500 z-10 rounded">
+      {{ error }}
     </p>
 
     <main class="relative flex flex-col gap-2 p-2">

@@ -16,12 +16,6 @@ class SocialiteController extends Controller
   public function googleCallback (Request $request) {
     $user_social = Socialite::driver('google')->user();
 
-    $terms = [
-      'email' => 'false',
-      'tac' => 'true',
-      'privacy' => 'true'
-    ];
-
     $user_email = User::where('email', $user_social->email)->first();
 
     if ($user_email != null && strlen($user_email->external_id) == 0) return redirect()->back()->withErrors('Correo ya existe');
@@ -38,7 +32,6 @@ class SocialiteController extends Controller
       'email' => $user_social->email,
       'email_verified_at' => now(),
       'user_type' => 'client',
-      'terms' => json_encode($terms),
       'avatar' => $user_social->avatar,
       'external_id' => $user_social->id,
       'external_auth' => 'google'

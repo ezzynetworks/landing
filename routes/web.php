@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SocialiteController;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -18,8 +20,15 @@ use Inertia\Inertia;
 |
 */
 
+# Public View
 Route::controller(LandingController::class)->group(function () {
     Route::get('/', 'index')->name('home');
+});
+
+# Admin View
+Route::controller(AdminDashboardController::class)->group(function () {
+  Route::get('/dashboard', 'index')->name('admin.dashboard');
+  Route::post('/store-content', 'storeContent');
 });
 
 # Socialite Controller
@@ -27,6 +36,7 @@ Route::controller(SocialiteController::class)->group(function () {
   Route::get('/google-login', 'googleLogin')->name('google-login');
   Route::get('/google-callback', 'googleCallback')->name('google-callback');
 });
+
 
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [

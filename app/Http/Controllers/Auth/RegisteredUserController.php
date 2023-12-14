@@ -24,6 +24,11 @@ class RegisteredUserController extends Controller
         return Inertia::render('Auth/Register');
     }
 
+    public function createAdmin(): Response
+    {
+        return Inertia::render('Auth/AdminRegister');
+    }
+
     /**
      * Handle an incoming registration request.
      *
@@ -41,12 +46,17 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'user_type' => $request->type
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(RouteServiceProvider::HOME);
+        if (Auth::user()->user_type == 'client') {
+          return redirect()->intended(route('home'));
+        } else {
+          return redirect()->intended(RouteServiceProvider::HOME);
+        }
     }
 }

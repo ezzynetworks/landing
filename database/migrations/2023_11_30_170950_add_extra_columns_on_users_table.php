@@ -14,7 +14,6 @@ return new class extends Migration
       Schema::table('users', function (Blueprint $table) {
         $table->string('user_type');
         $table->string('phone_number')->nullable();
-        $table->longText('terms');
         $table->string('password')->nullable()->change();
         $table->string('avatar')->nullable();
         $table->string('external_id')->nullable();
@@ -29,12 +28,11 @@ return new class extends Migration
     {
       Schema::table('users', function (Blueprint $table) {
         $table->dropColumn('user_type');
-        $table->dropColumn('phone_number')->nullable();
-        $table->dropColumn('terms');
-        $table->string('password')->change();
-        $table->dropColumn('avatar')->nullable();
-        $table->dropColumn('external_id')->nullable();
-        $table->dropColumn('external_auth')->nullable();
+        $table->dropColumn('phone_number');
+        $table->string('password')->notNull()->change();
+        $table->dropColumn('avatar');
+        $table->dropColumn('external_id');
+        $table->dropColumn('external_auth');
       });
     }
 };
