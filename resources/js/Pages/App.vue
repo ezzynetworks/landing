@@ -25,8 +25,10 @@ onMounted(() => {
   if (props.contents != null) section.value.root.innerHTML = props.contents
 
   if (usePage().props.auth.user != null && logged.value == false) {
-    localStorage.setItem('logged', true)
-    window.open('https://www.google.com')
+    if (usePage().props.auth.user.user_type == client) {
+      localStorage.setItem('logged', true)
+      window.open('https://www.google.com')
+    }
   }
 
   if (usePage().props.auth.user == null) {
